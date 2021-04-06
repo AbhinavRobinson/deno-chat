@@ -10,6 +10,6 @@ const onConnectionOpen = () => {
   console.log(`Conneection opened`);
 };
 
-const onMessageReceived = (event) => {
+const onMessageReceived = (event: Event) => {
   console.log(`Message received`, event);
 };
