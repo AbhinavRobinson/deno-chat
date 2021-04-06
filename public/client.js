@@ -1,4 +1,4 @@
-let ws: WebSocket;
+let ws;
 
 window.addEventListener("DOMContentLoaded", () => {
   ws = new WebSocket(`ws://localhost:3000/ws`);
@@ -7,9 +7,9 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 const onConnectionOpen = () => {
-  console.log(`Conneection opened`);
+  console.log(`Connection opened`);
 };
 
-const onMessageReceived = (event: Event) => {
+const onMessageReceived = (event) => {
   console.log(`Message received`, event);
 };
