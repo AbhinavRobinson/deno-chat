@@ -23,6 +23,12 @@ const chat = async (ws) => {
 
   for await (const data of ws) {
     const event = JSON.parse(data);
+    // switch (event.event) {
+    //   // case 'join':
+    //   //   const userObj = {
+
+    //   //   }
+    // }
   }
 };
 
