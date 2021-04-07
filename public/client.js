@@ -5,12 +5,26 @@ window.addEventListener("DOMContentLoaded", () => {
   ws.addEventListener("open", onConnectionOpen);
   ws.addEventListener("message", onMessageReceived);
 
-  const queryParams = getQueryParams();
-  console.log(queryParams);
+  ws.send();
 });
 
 const onConnectionOpen = () => {
   console.log(`Connection opened`);
+
+  const queryParams = getQueryParams();
+  console.log(queryParams);
+
+  if (!queryParams.name || !queryParams.group) {
+    window.location.href = "chat.html";
+  }
+
+  const event = {
+    event: "join",
+    groupName: queryParams.group,
+    name: queryParams.name,
+  };
+
+  ws.send(event);
 };
 
 const onMessageReceived = (event) => {
