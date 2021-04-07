@@ -3,13 +3,13 @@ import { acceptable, acceptWebSocket } from "https://deno.land/std/ws/mod.ts";
 import chat from "./chat.js";
 
 listenAndServe({ port: 3000 }, async (req) => {
-  if (await acceptable(req)) {
-    acceptWebSocket({
+  if (acceptable(req)) {
+    await acceptWebSocket({
       conn: req.conn,
       bufReader: req.r,
       bufWriter: req.w,
       headers: req.headers,
-    }).then(() => chat);
+    }).then(chat);
   }
 });
 

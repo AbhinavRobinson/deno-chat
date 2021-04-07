@@ -5,7 +5,7 @@ window.addEventListener("DOMContentLoaded", () => {
   ws.addEventListener("open", onConnectionOpen);
   ws.addEventListener("message", onMessageReceived);
 
-  ws.send();
+  // ws.send();
 });
 
 const onConnectionOpen = () => {
@@ -24,7 +24,7 @@ const onConnectionOpen = () => {
     name: queryParams.name,
   };
 
-  ws.send(event);
+  ws.send(JSON.stringify(event));
 };
 
 const onMessageReceived = (event) => {
