@@ -13,9 +13,17 @@ const onConnectionOpen = () => {
 };
 
 const onMessageReceived = (event) => {
-  console.log(`Message received`, event);
+  console.log("Message received", event);
 };
 
 const getQueryParams = () => {
   const search = window.location.search.substring(1);
+  const pairs = search.split('&');
+  const params = {};
+  for (const pair of pairs) {
+    const parts = pair.split('=');
+    params[decodeURIComponent(parts[0])] = decodeURIComponent(parts[1]);
+  }
+
+  return params;
 };
