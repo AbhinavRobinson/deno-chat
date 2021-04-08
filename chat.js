@@ -2,16 +2,18 @@ import { v4 } from "https://deno.land/std/uuid/mod.ts";
 
 /**
  * UserID
+ *  > userId: string
  *  > name: string
- *  > groupName: string,
+ *  > groupName: string
  *  > ws: WebSocket
  */
 const usersMap = new Map();
 
 /**
  * GroupName: [user1, user2]
- *  > userId: string,
- *  > name: string,
+ *  >groupName: string
+ *  > userId: string
+ *  > name: string
  *  > ws: WebSocket 
  */
 const groupsMap = new Map();
@@ -23,13 +25,32 @@ const chat = async (ws) => {
 
   for await (const data of ws) {
     const event = JSON.parse(data);
-    // switch (event.event) {
-    //   // case 'join':
-    //   //   const userObj = {
-
-    //   //   }
-    // }
+    switch (event.event) {
+      case "join": {
+        const userObj = {
+          userId,
+          name: event.name,
+          groupsName: event.groupsName,
+          ws,
+        };
+        usersMap.set(userId, userObj);
+        const users = groupsMap.get(event.groupsName) || [];
+        users.push(userObj);
+        groupsMap.set(event.groupsName, users);
+        emitEvent(event.groupsName);
+        break;
+      }
+      case "message": {
+        break;
+      }
+      default: {
+        break;
+      }
+    }
   }
+};
+
+const emitEvent = (groupName) => {
 };
 
 export default chat;
