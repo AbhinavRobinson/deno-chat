@@ -1,4 +1,5 @@
 import { v4 } from "https://deno.land/std/uuid/mod.ts";
+import { isWebSocketCloseEvent } from "https://deno.land/std/ws/mod.ts";
 
 /**
  * UserID
@@ -24,7 +25,21 @@ const chat = async (ws) => {
   const userId = v4.generate();
 
   for await (const data of ws) {
-    const event = JSON.parse(data);
+    const event = typeof data === "string" ? JSON.parse(data) : data;
+
+    if (isWebSocketCloseEvent(data)) {
+      const userObj = usersMap.get(userId);
+
+      let users = groupsMap.get(userObj.groupName) || [];
+      users = users.filter((u) => u.userId !== userId);
+
+      groupsMap.set(userObj.groupName, users);
+      usersMap.delete(userId);
+
+      emitEvent(userObj.groupName);
+      break;
+    }
+
     switch (event.event) {
       case "join": {
         const userObj = {

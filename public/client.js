@@ -29,6 +29,8 @@ const onConnectionOpen = () => {
 
 const onMessageReceived = (event) => {
   console.log("Message received", event);
+  const data = JSON.parse(event.data);
+  console.log(data);
 };
 
 const getQueryParams = () => {
