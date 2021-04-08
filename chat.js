@@ -11,7 +11,7 @@ const usersMap = new Map();
 
 /**
  * GroupName: [user1, user2]
- *  >groupName: string
+ *  > groupName: string
  *  > userId: string
  *  > name: string
  *  > ws: WebSocket 
@@ -30,14 +30,14 @@ const chat = async (ws) => {
         const userObj = {
           userId,
           name: event.name,
-          groupsName: event.groupsName,
+          groupName: event.groupName,
           ws,
         };
         usersMap.set(userId, userObj);
-        const users = groupsMap.get(event.groupsName) || [];
+        const users = groupsMap.get(event.groupName) || [];
         users.push(userObj);
-        groupsMap.set(event.groupsName, users);
-        emitEvent(event.groupsName);
+        groupsMap.set(event.groupName, users);
+        emitEvent(event.groupName);
         break;
       }
       case "message": {
@@ -51,6 +51,21 @@ const chat = async (ws) => {
 };
 
 const emitEvent = (groupName) => {
+  const users = groupsMap.get(groupName) || [];
+  for (const user of users) {
+    const event = {
+      event: "users",
+      data: getDisplayUsers(groupName),
+    };
+    user.ws.send(JSON.stringify(event));
+  }
+};
+
+const getDisplayUsers = (groupName) => {
+  const users = groupsMap.get(groupName) || [];
+  return users.map((u) => {
+    return { userId: u.userId, name: u.name };
+  });
 };
 
 export default chat;
